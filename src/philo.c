@@ -6,7 +6,7 @@
 /*   By: cvrlja <cvrlja@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 15:42:19 by cvrlja            #+#    #+#             */
-/*   Updated: 2024/12/09 17:03:41 by cvrlja           ###   ########.fr       */
+/*   Updated: 2024/12/09 18:18:31 by cvrlja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,5 +42,6 @@ int main(int argc, char **argv)
     init_forks(&sim);
     init_philo(&sim, sim.philos);
     pthread_create(&sim.monitor, NULL, monitor_death, (void *)&sim);
+    pthread_join(sim.monitor, NULL);
     cleanup(&sim);
 }
