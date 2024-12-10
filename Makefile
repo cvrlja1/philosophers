@@ -9,7 +9,8 @@ SRC = $(SRC_DIR)/philo.c \
 	  $(SRC_DIR)/monitor.c \
 	  $(SRC_DIR)/routine.c \
 	  $(SRC_DIR)/initialize.c \
-	  $(SRC_DIR)/cleanup.c
+	  $(SRC_DIR)/cleanup.c \
+	  $(SRC_DIR)/print_error.c
 OBJ = $(SRC:.c=.o)
 
 

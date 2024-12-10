@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   monitor.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cvrlja <cvrlja@student.42.fr>              +#+  +:+       +#+        */
+/*   By: nicvrlja <nicvrlja@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 15:46:12 by cvrlja            #+#    #+#             */
-/*   Updated: 2024/12/09 22:13:21 by cvrlja           ###   ########.fr       */
+/*   Updated: 2024/12/10 18:23:28 by nicvrlja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,50 +23,58 @@ int	ft_usleep(size_t milliseconds)
 	return (0);
 }
 
-int has_philo_died(t_philo *philo, t_sim *sim)
+int has_philo_died(t_philo *philo)
 {
     long current_time = get_current_time();
-    pthread_mutex_lock(&sim->meal_lock);
-    if (current_time - philo->last_meal_time >= sim->time_to_die)
+
+	pthread_mutex_lock(philo->m_lock);
+    if (current_time - philo->last_meal_time >= philo->time_to_die)
     {
-        pthread_mutex_unlock(&sim->meal_lock);
         print_state(philo, "died");
-        return 1;
+		pthread_mutex_unlock(philo->m_lock);
+        return (1);
     }
-    pthread_mutex_unlock(&sim->meal_lock);
-    return 0;
+	pthread_mutex_unlock(philo->m_lock);
+    return (0);
 }
 
-void *monitor_death(void *arg)
+int	monitor_death(t_philo *philo)
+{    
+    int	i;
+
+	i = -1;
+    while (++i < philo->philo_count)
+	{
+        if (has_philo_died(&philo[i]))
+		{
+			pthread_mutex_lock(philo->monitor_lock);
+			*philo->sim_stop = 1;
+			pthread_mutex_unlock(philo->monitor_lock);
+			return (1);
+		}
+	}
+    return (0);
+}
+
+void	*monitor(void *arg)
 {
-    t_sim *sim = (t_sim *)arg;
-    
-    while (!sim->simulation_stop)
-    {
-        int i = 0;
-        while (i < sim->number_of_philos)
-        {
-            pthread_mutex_lock(&sim->monitor_lock);
-            if (has_philo_died(&sim->philos[i], sim))
-            {
-                sim->simulation_stop = 1;
-                pthread_mutex_unlock(&sim->monitor_lock);
-                break;
-            }
-            pthread_mutex_unlock(&sim->monitor_lock);
-            i++;
-        }
-    }
-    return NULL;
-}
+	t_philo *philo;
 
+	philo = (t_philo *)arg;
+	while (1)
+	{
+		if (!monitor_death(philo))
+			break ;
+	}
+	return (NULL);
+}
 
 void    print_state(t_philo *philo, char *state)
 {
     long    timestamp;
 
-    pthread_mutex_lock(philo->m_print);
+	pthread_mutex_lock(philo->print_lock);
     timestamp = get_current_time() - philo->start_time;
     printf("%ld %d %s\n", timestamp, philo->id, state);
-    pthread_mutex_unlock(philo->m_print);
+	pthread_mutex_unlock(philo->print_lock);
 }
