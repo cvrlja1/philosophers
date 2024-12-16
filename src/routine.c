@@ -6,7 +6,7 @@
 /*   By: nicvrlja <nicvrlja@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 15:40:12 by cvrlja            #+#    #+#             */
-/*   Updated: 2024/12/16 17:25:34 by nicvrlja         ###   ########.fr       */
+/*   Updated: 2024/12/16 18:26:33 by nicvrlja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,9 @@ int    philo_eat(t_philo *philo)
 	pthread_mutex_unlock(&philo->meal);
 	print_state(philo, "is eating");
 	usleep(philo->time_to_eat * 1000);
+	pthread_mutex_lock(&philo->meal);
+	philo->meals_eaten++;
+	pthread_mutex_unlock(&philo->meal);
 	pthread_mutex_unlock(&philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);
     return (1);
@@ -58,8 +61,8 @@ void    *philo_routine(void *arg)
 		if (philo->id % 2)
 			usleep(100);
 		philo_eat(philo);
+		philo_sleep(philo);
 		philo_think(philo);
-        philo_sleep(philo);
 	}
     return (NULL);
 }

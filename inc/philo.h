@@ -6,7 +6,7 @@
 /*   By: nicvrlja <nicvrlja@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 15:42:34 by cvrlja            #+#    #+#             */
-/*   Updated: 2024/12/16 17:19:08 by nicvrlja         ###   ########.fr       */
+/*   Updated: 2024/12/16 18:01:47 by nicvrlja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,13 +35,13 @@
 typedef struct s_philo
 {
 	int id;
-	int meals;
+	int meals_to_eat;
+	int meals_eaten;
 	long last_meal_time;
 	long time_to_sleep;
 	long time_to_eat;
 	long time_to_die;
 	long start_time;
-	int	eating;
 	pthread_t thread_id;
 	pthread_mutex_t left_fork;
 	pthread_mutex_t *right_fork;

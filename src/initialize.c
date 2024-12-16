@@ -6,7 +6,7 @@
 /*   By: nicvrlja <nicvrlja@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 16:08:37 by cvrlja            #+#    #+#             */
-/*   Updated: 2024/12/16 17:20:30 by nicvrlja         ###   ########.fr       */
+/*   Updated: 2024/12/16 18:01:51 by nicvrlja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,13 @@ void    init_philo(t_sim *sim, t_philo *philo, char **av)
     i = -1;
     while (++i < sim->philo_count)
     {
+		if (av[5])
+			philo[i].meals_to_eat = ft_atoi(av[5]);
+		else
+			philo[i].meals_to_eat = -1;
         philo[i].id = i + 1;
         philo[i].sim_stop = &sim->stop;
-        philo[i].meals = 0;
-		philo[i].eating = 0;
+		philo[i].meals_eaten = 0;
         philo[i].last_meal_time = get_current_time();
         philo[i].start_time = get_current_time();
         philo[i].time_to_eat = ft_atoi(av[3]);

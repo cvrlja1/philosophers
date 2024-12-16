@@ -6,7 +6,7 @@
 /*   By: nicvrlja <nicvrlja@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 15:46:12 by cvrlja            #+#    #+#             */
-/*   Updated: 2024/12/16 17:19:39 by nicvrlja         ###   ########.fr       */
+/*   Updated: 2024/12/16 18:11:22 by nicvrlja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,21 @@ int	philo_died(t_philo *philo)
 	return (pthread_mutex_unlock(&philo->meal), 0);
 }
 
+int	all_philos_ate(t_philo *philo)
+{
+	int	i;
+
+	i = -1;
+	while (++i < philo->philo_count)
+	{
+		pthread_mutex_lock(&philo[i].meal);
+		if (philo[i].meals_to_eat == -1 || philo[i].meals_eaten < philo[i].meals_to_eat)
+			return (pthread_mutex_unlock(&philo[i].meal), 0);
+		pthread_mutex_unlock(&philo[i].meal);
+	}
+	return (1);
+}
+
 int	monitor_death(t_sim *sim)
 {    
     int	i;
@@ -34,6 +49,13 @@ int	monitor_death(t_sim *sim)
 		i = -1;
     	while (++i < philo->philo_count)
 		{
+			if (all_philos_ate(philo))
+			{
+				pthread_mutex_lock(philo->monitor);
+				*philo[i].sim_stop = 1;
+				pthread_mutex_unlock(philo->monitor);
+				return (0);
+			}
        		if (philo_died(&philo[i]))
 			{
 				print_state(&philo[i], "died");
@@ -43,8 +65,6 @@ int	monitor_death(t_sim *sim)
 				return (1);
 			}
 		}
-		if (sim->stop)
-			break ;
 	}
     return (0);
 }
