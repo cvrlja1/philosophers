@@ -6,7 +6,7 @@
 /*   By: nicvrlja <nicvrlja@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 16:08:37 by cvrlja            #+#    #+#             */
-/*   Updated: 2024/12/10 17:48:31 by nicvrlja         ###   ########.fr       */
+/*   Updated: 2024/12/16 17:20:30 by nicvrlja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,29 +15,16 @@
 void    init_sim(t_sim *sim)
 {
     memset((void *)sim, 0, sizeof(t_sim));
-    if (pthread_mutex_init(&sim->monitor_lock, NULL))
-    {
-        print_error(MU_ERR);
-        exit(1);
-    }
-    if (pthread_mutex_init(&sim->monitor_print, NULL))
-    {
-        print_error(MU_ERR);
-        exit(1);
-    }
-    if (pthread_mutex_init(&sim->meal_lock, NULL))
-    {
-        print_error(MU_ERR);
-        exit(1);
-    }
+	pthread_mutex_init(&sim->print, NULL);
+	pthread_mutex_init(&sim->monitor, NULL);
 }
 
-void create_threads(t_philo *philo, t_sim *sim)
+void create_threads(t_philo *philo)
 {
     int i;
 
     i = -1;
-    while (++i < sim->number_of_philos)
+    while (++i < philo->philo_count)
     {
      if (pthread_create(&philo[i].thread_id, NULL, philo_routine, (void *)&philo[i]))
         {
@@ -47,42 +34,42 @@ void create_threads(t_philo *philo, t_sim *sim)
     }
 }
 
-void    init_philo(t_sim *sim, t_philo *philo)
+void    init_philo(t_sim *sim, t_philo *philo, char **av)
 {
     int i;
 
     i = -1;
-    while (++i < sim->number_of_philos)
+    while (++i < sim->philo_count)
     {
         philo[i].id = i + 1;
-        philo[i].sim_stop = &sim->simulation_stop;
-        philo[i].m_lock = &sim->meal_lock;
+        philo[i].sim_stop = &sim->stop;
         philo[i].meals = 0;
+		philo[i].eating = 0;
         philo[i].last_meal_time = get_current_time();
         philo[i].start_time = get_current_time();
-        philo[i].time_to_eat = sim->time_to_eat;
-        philo[i].time_to_sleep = sim->time_to_sleep;
-		philo[i].time_to_die = sim->time_to_die;
-        philo[i].monitor_lock = &sim->monitor_lock;
-        philo[i].print_lock = &sim->monitor_print;
-		philo[i].philo_count = sim->number_of_philos;
-        philo[i].left_fork = &sim->forks[i];
-        philo[i].right_fork = &sim->forks[(i + 1) % sim->number_of_philos];
+        philo[i].time_to_eat = ft_atoi(av[3]);
+        philo[i].time_to_sleep = ft_atoi(av[4]);
+		philo[i].time_to_die = ft_atoi(av[2]);
+		philo[i].philo_count = ft_atoi(av[1]);
+		philo[i].print = &sim->print;
+		philo[i].monitor = &sim->monitor;
+        philo[i].right_fork = &philo[(i + 1) % philo->philo_count].left_fork;
+		pthread_mutex_init(&philo[i].meal, NULL);
     }
-    create_threads(philo, sim);
+    create_threads(philo);
 }
 
-void    init_forks(t_sim *sim)
+void	init_forks(t_sim *sim, t_philo *philo)
 {
-    int i;
+	int	i;
 
-    i = -1;
-    while (++i < sim->number_of_philos)
-    {
-        if(pthread_mutex_init(&sim->forks[i], NULL))
+	i = -1;
+	while (++i < sim->philo_count)
+	{
+		if(pthread_mutex_init(&philo[i].left_fork, NULL))
         {
             print_error(MU_ERR);
             exit(1);
         }
-    }
+	}
 }

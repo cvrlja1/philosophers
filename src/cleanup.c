@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cvrlja <cvrlja@student.42.fr>              +#+  +:+       +#+        */
+/*   By: nicvrlja <nicvrlja@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 16:40:47 by cvrlja            #+#    #+#             */
-/*   Updated: 2024/12/09 18:56:01 by cvrlja           ###   ########.fr       */
+/*   Updated: 2024/12/11 18:11:13 by nicvrlja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,14 @@ void    cleanup(t_sim *sim)
     int i;
 
     i = -1;
-    while (++i < sim->number_of_philos)
+    while (++i < sim->philo_count)
         pthread_join(sim->philos[i].thread_id, NULL);
     i = -1;
-    while (++i < sim->number_of_philos)
-        pthread_mutex_destroy(&sim->forks[i]);
-    pthread_mutex_destroy(&sim->monitor_lock);
+    while (++i < sim->philo_count)
+	{
+        pthread_mutex_destroy(&sim->philos[i].left_fork);
+	}
+	pthread_mutex_destroy(&sim->print);
+    pthread_mutex_destroy(&sim->monitor);
     free(sim->philos);
-    free(sim->forks);
 }

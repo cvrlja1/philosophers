@@ -6,7 +6,7 @@
 /*   By: nicvrlja <nicvrlja@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 15:42:34 by cvrlja            #+#    #+#             */
-/*   Updated: 2024/12/10 17:48:09 by nicvrlja         ###   ########.fr       */
+/*   Updated: 2024/12/16 17:19:08 by nicvrlja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,44 +41,39 @@ typedef struct s_philo
 	long time_to_eat;
 	long time_to_die;
 	long start_time;
+	int	eating;
 	pthread_t thread_id;
-	pthread_mutex_t *left_fork;
+	pthread_mutex_t left_fork;
 	pthread_mutex_t *right_fork;
-	pthread_mutex_t *monitor_lock;
-	pthread_mutex_t *print_lock;
-	pthread_mutex_t *m_lock;
+	pthread_mutex_t *monitor;
+	pthread_mutex_t meal;
+	pthread_mutex_t *print;
 	int	philo_count;
 	int *sim_stop;
 } t_philo;
 
 typedef struct s_simulation
 {
-	int number_of_philos;
-	long time_to_die;
-	long time_to_sleep;
-	long time_to_eat;
-	int meals_required;
-	int simulation_stop;
-	pthread_mutex_t monitor_lock;
-	pthread_mutex_t monitor_print;
-	pthread_mutex_t meal_lock;
-	pthread_t monitor;
+	int	stop;
+	int	philo_count;
+	pthread_mutex_t monitor;
+	pthread_mutex_t print;
 	t_philo *philos;
-	pthread_mutex_t *forks;
 } t_sim;
 
 int ft_atoi(const char *nptr);
-int args_check(int ac, char **av, t_sim *sim);
+int initialize(int ac, char **av, t_sim *sim);
 size_t get_current_time(void);
 void print_state(t_philo *philo, char *state);
 void init_sim(t_sim *sim);
-void init_philo(t_sim *sim, t_philo *philo);
-void init_forks(t_sim *sim);
+void init_philo(t_sim *sim, t_philo *philo, char **av);
+void init_forks(t_sim *sim, t_philo *philo);
 void *philo_routine(void *arg);
 int has_philo_died(t_philo *philo);
-void *monitor(void *arg);
-int	monitor_death(t_philo *philo);
+void *monitor(t_sim *sim);
+int	monitor_death(t_sim *sim);
 void cleanup(t_sim *sim);
 int ft_usleep(size_t milliseconds);
 void print_error(char *msg);
+int	is_dead(t_philo *philo);
 #endif

@@ -3,24 +3,56 @@
 /*                                                        :::      ::::::::   */
 /*   args_check.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cvrlja <cvrlja@student.42.fr>              +#+  +:+       +#+        */
+/*   By: nicvrlja <nicvrlja@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 15:29:15 by cvrlja            #+#    #+#             */
-/*   Updated: 2024/12/09 19:27:09 by cvrlja           ###   ########.fr       */
+/*   Updated: 2024/12/11 17:32:32 by nicvrlja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int args_check(int ac, char **av, t_sim *sim)
+int	ft_isdigit(int c)
 {
-    sim->number_of_philos = ft_atoi(av[1]);
-    sim->time_to_die = ft_atoi(av[2]);
-    sim->time_to_eat = ft_atoi(av[3]);
-    sim->time_to_sleep = ft_atoi(av[4]);
-    if (ac == 6)
-        sim->meals_required = ft_atoi(av[5]);
-    else
-        sim->meals_required = -1;
-    return (1);
+	if (c >= '0' && c <= '9')
+		return (0);
+	return (1);
+}
+
+int	check_args(int ac, char **av)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (++i < ac)
+	{
+		j = 0;
+		while (av[i][j])
+		{
+			if (ft_isdigit(av[i][j]))
+				return (1);
+			j++;
+		}
+		if (i == 1 && ft_atoi(av[i]) > 200)
+			return (1);
+		if (ft_atoi(av[i]) <= 0)
+			return (1);
+	}
+	return (0);
+}
+
+int initialize(int ac, char **av, t_sim *sim)
+{
+	init_sim(sim);
+	if(check_args(ac, av))
+		return (1);
+	sim->philos = malloc(sizeof(t_philo) * ft_atoi(av[1]));
+	if (!sim->philos)
+	{
+		print_error(M_ERR);
+		exit(1);
+	}
+	sim->philo_count = ft_atoi(av[1]);
+	return (0);
 }
