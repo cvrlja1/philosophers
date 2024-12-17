@@ -6,11 +6,30 @@
 /*   By: nicvrlja <nicvrlja@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 15:42:19 by cvrlja            #+#    #+#             */
-/*   Updated: 2024/12/16 18:07:12 by nicvrlja         ###   ########.fr       */
+/*   Updated: 2024/12/17 20:03:28 by nicvrlja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+int	ft_usleep(size_t milliseconds, t_philo *philo)
+{
+	size_t	start_t;
+	size_t	remaining_t;
+
+	start_t = get_current_time();
+	while ((get_current_time() - start_t) < milliseconds)
+	{
+		if (is_dead(philo))
+			return (1);
+		remaining_t = milliseconds - (get_current_time() - start_t);
+		if (remaining_t > 500)
+			usleep(500);
+		else
+			usleep(remaining_t);
+	}
+	return (0);
+}
 
 size_t	get_current_time(void)
 {
@@ -35,10 +54,11 @@ int main(int argc, char **argv)
 	}
     else
 	{
-        return (printf("Error\n"), -1);
+        return (print_error("Usage: \n"), -1);
 	}
-	init_forks(&sim, sim.philos);
-    init_philo(&sim, sim.philos, argv);
+	if (init_philo(&sim, sim.philos, argv))
+		return (1);
 	monitor_death(&sim);
     cleanup(&sim);
+	return (0);
 }

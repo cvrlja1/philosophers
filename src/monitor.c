@@ -6,7 +6,7 @@
 /*   By: nicvrlja <nicvrlja@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 15:46:12 by cvrlja            #+#    #+#             */
-/*   Updated: 2024/12/16 18:11:22 by nicvrlja         ###   ########.fr       */
+/*   Updated: 2024/12/17 20:03:42 by nicvrlja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ int	monitor_death(t_sim *sim)
 				return (1);
 			}
 		}
+		usleep(100);
 	}
     return (0);
 }
