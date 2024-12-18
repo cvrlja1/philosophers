@@ -6,7 +6,7 @@
 /*   By: nicvrlja <nicvrlja@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 15:40:12 by cvrlja            #+#    #+#             */
-/*   Updated: 2024/12/17 20:05:47 by nicvrlja         ###   ########.fr       */
+/*   Updated: 2024/12/18 17:03:09 by nicvrlja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,17 +77,8 @@ void    *philo_routine(void *arg)
     t_philo *philo;
 
     philo = (t_philo *)arg;
-	while (1)
-	{
-		pthread_mutex_lock(philo->start);
-		if (*philo->start_flag)
-		{
-			pthread_mutex_unlock(philo->start);
-			break ;
-		}
-		pthread_mutex_unlock(philo->start);
-	}
-	
+	pthread_mutex_lock(philo->start);
+	pthread_mutex_unlock(philo->start);
     while (!is_dead(philo))
     {
 		if (philo->id % 2)

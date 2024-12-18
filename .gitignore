@@ -1,2 +1,4 @@
 *.o
 philo
+*.txt
+test.sh

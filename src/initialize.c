@@ -6,7 +6,7 @@
 /*   By: nicvrlja <nicvrlja@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 16:08:37 by cvrlja            #+#    #+#             */
-/*   Updated: 2024/12/17 20:05:14 by nicvrlja         ###   ########.fr       */
+/*   Updated: 2024/12/18 16:45:27 by nicvrlja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ int	create_threads(t_philo *philo, t_sim *sim)
 {
     int i;
 
+	pthread_mutex_lock(&sim->start);
     i = -1;
     while (++i < philo->philo_count)
     {
@@ -51,7 +52,7 @@ int	create_threads(t_philo *philo, t_sim *sim)
             return (1);
         }
     }
-	sim->start_flag = 1;
+	pthread_mutex_unlock(&sim->start);
 	return (0);
 }
 
@@ -69,7 +70,6 @@ int	init_philo(t_sim *sim, t_philo *philo, char **av)
         philo[i].id = i + 1;
         philo[i].sim_stop = &sim->stop;
 		philo[i].meals_eaten = 0;
-		philo[i].start_flag = &sim->start_flag;
         philo[i].last_meal_time = get_current_time();
         philo[i].start_time = get_current_time();
         philo[i].time_to_eat = ft_atoi(av[3]);

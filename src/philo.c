@@ -6,7 +6,7 @@
 /*   By: nicvrlja <nicvrlja@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 15:42:19 by cvrlja            #+#    #+#             */
-/*   Updated: 2024/12/17 20:03:28 by nicvrlja         ###   ########.fr       */
+/*   Updated: 2024/12/18 20:25:10 by nicvrlja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,14 @@
 
 int	ft_usleep(size_t milliseconds, t_philo *philo)
 {
-	size_t	start_t;
-	size_t	remaining_t;
+	size_t	end_t;
 
-	start_t = get_current_time();
-	while ((get_current_time() - start_t) < milliseconds)
+	end_t = get_current_time() + milliseconds;
+	while (get_current_time() < end_t)
 	{
 		if (is_dead(philo))
 			return (1);
-		remaining_t = milliseconds - (get_current_time() - start_t);
-		if (remaining_t > 500)
-			usleep(500);
-		else
-			usleep(remaining_t);
+		usleep(1000);
 	}
 	return (0);
 }
