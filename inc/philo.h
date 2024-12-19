@@ -6,7 +6,7 @@
 /*   By: nicvrlja <nicvrlja@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 15:42:34 by cvrlja            #+#    #+#             */
-/*   Updated: 2024/12/18 16:45:30 by nicvrlja         ###   ########.fr       */
+/*   Updated: 2024/12/19 20:44:19 by nicvrlja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ typedef struct s_simulation
 
 int ft_atoi(const char *nptr);
 int initialize(int ac, char **av, t_sim *sim);
-size_t get_current_time(void);
+long get_current_time(void);
 void print_state(t_philo *philo, char *state);
 void init_sim(t_sim *sim);
 int init_philo(t_sim *sim, t_philo *philo, char **av);
@@ -78,5 +78,5 @@ int	monitor_death(t_sim *sim);
 void cleanup(t_sim *sim);
 void print_error(char *msg);
 int	is_dead(t_philo *philo);
-int	ft_usleep(size_t milliseconds, t_philo *philo);
+int	ft_usleep(long milliseconds, t_philo *philo);
 #endif

@@ -6,27 +6,27 @@
 /*   By: nicvrlja <nicvrlja@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 15:42:19 by cvrlja            #+#    #+#             */
-/*   Updated: 2024/12/18 20:25:10 by nicvrlja         ###   ########.fr       */
+/*   Updated: 2024/12/19 20:44:31 by nicvrlja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	ft_usleep(size_t milliseconds, t_philo *philo)
+int	ft_usleep(long milliseconds, t_philo *philo)
 {
-	size_t	end_t;
+	long	end_t;
 
 	end_t = get_current_time() + milliseconds;
 	while (get_current_time() < end_t)
 	{
 		if (is_dead(philo))
 			return (1);
-		usleep(1000);
+		usleep(500);
 	}
 	return (0);
 }
 
-size_t	get_current_time(void)
+long	get_current_time(void)
 {
 	struct timeval	time;
 

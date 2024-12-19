@@ -6,37 +6,34 @@
 /*   By: nicvrlja <nicvrlja@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 15:46:12 by cvrlja            #+#    #+#             */
-/*   Updated: 2024/12/18 19:04:53 by nicvrlja         ###   ########.fr       */
+/*   Updated: 2024/12/19 20:43:33 by nicvrlja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	philo_died(t_philo *philo)
+int	philo_died(t_philo *philo, t_sim *sim)
 {
-	long	c_time;
 	int		i;
 
 	i = -1;
-	pthread_mutex_lock(philo->monitor);
+	pthread_mutex_lock(&sim->monitor);
 	while (++i < philo->philo_count)
 	{
-		c_time = get_current_time();
 		pthread_mutex_lock(&philo[i].meal);
-		if (c_time - philo[i].last_meal_time >= philo[i].time_to_die)
+		if (get_current_time() - philo[i].last_meal_time >= philo[i].time_to_die)
 		{
 			pthread_mutex_unlock(&philo[i].meal);
 			*philo[i].sim_stop = 1;
-			pthread_mutex_unlock(philo->monitor);
-			pthread_mutex_lock(philo->print);
-    		long timestamp = get_current_time() - philo->start_time;
-    		printf("%ld %d %s\n", timestamp, philo->id, "died");
-			pthread_mutex_unlock(philo->print);
+			pthread_mutex_unlock(&sim->monitor);
+			pthread_mutex_lock(philo[i].print);
+    		printf("%ld %d %s\n", get_current_time() - philo[i].start_time, philo[i].id, "died");
+			pthread_mutex_unlock(philo[i].print);
 			return (1);
 		}
 		pthread_mutex_unlock(&philo[i].meal);
 	}
-	pthread_mutex_unlock(philo->monitor);
+	pthread_mutex_unlock(&sim->monitor);
 	return (0);
 }
 
@@ -73,7 +70,7 @@ int	monitor_death(t_sim *sim)
 	philo = sim->philos;
 	while (1)
 	{
-		if (all_philos_ate(philo) || philo_died(philo))
+		if (all_philos_ate(philo) || philo_died(philo, sim))
 			break ;
 		usleep(100);
 	}
