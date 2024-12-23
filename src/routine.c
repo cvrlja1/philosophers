@@ -6,7 +6,7 @@
 /*   By: nicvrlja <nicvrlja@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 15:40:12 by cvrlja            #+#    #+#             */
-/*   Updated: 2024/12/23 20:06:41 by nicvrlja         ###   ########.fr       */
+/*   Updated: 2024/12/23 21:14:04 by nicvrlja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,17 +82,25 @@ void    *philo_routine(void *arg)
     {
 		if (philo->philo_count == 1)
 			break ;
+		if (is_dead(philo))
+			break ;
 		if (philo->id % 2)
 		{
-			usleep(500);
+			usleep(300);
+			if (is_dead(philo))
+				break ;
 			philo_eat_odd(philo);
 		}
 		else
-		{
 			philo_eat_even(philo);
-		}
+		if (is_dead(philo))
+			break ;
 		philo_sleep(philo);
+		if (is_dead(philo))
+			break ;
 		philo_think(philo);
+		if (is_dead(philo))
+			break ;
 	}
     return (NULL);
 }

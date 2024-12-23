@@ -6,7 +6,7 @@
 /*   By: nicvrlja <nicvrlja@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 15:42:19 by cvrlja            #+#    #+#             */
-/*   Updated: 2024/12/19 20:44:31 by nicvrlja         ###   ########.fr       */
+/*   Updated: 2024/12/23 21:17:18 by nicvrlja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	ft_usleep(long milliseconds, t_philo *philo)
 	{
 		if (is_dead(philo))
 			return (1);
-		usleep(500);
+		usleep(300);
 	}
 	return (0);
 }
