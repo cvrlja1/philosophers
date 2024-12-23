@@ -6,7 +6,7 @@
 /*   By: nicvrlja <nicvrlja@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 15:46:12 by cvrlja            #+#    #+#             */
-/*   Updated: 2024/12/19 20:43:33 by nicvrlja         ###   ########.fr       */
+/*   Updated: 2024/12/23 19:56:01 by nicvrlja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,23 +17,22 @@ int	philo_died(t_philo *philo, t_sim *sim)
 	int		i;
 
 	i = -1;
-	pthread_mutex_lock(&sim->monitor);
 	while (++i < philo->philo_count)
 	{
 		pthread_mutex_lock(&philo[i].meal);
 		if (get_current_time() - philo[i].last_meal_time >= philo[i].time_to_die)
 		{
 			pthread_mutex_unlock(&philo[i].meal);
+			pthread_mutex_lock(&sim->monitor);
 			*philo[i].sim_stop = 1;
-			pthread_mutex_unlock(&sim->monitor);
-			pthread_mutex_lock(philo[i].print);
+			//pthread_mutex_lock(philo[i].print);
     		printf("%ld %d %s\n", get_current_time() - philo[i].start_time, philo[i].id, "died");
-			pthread_mutex_unlock(philo[i].print);
+			//pthread_mutex_unlock(philo[i].print);
+			pthread_mutex_unlock(&sim->monitor);
 			return (1);
 		}
 		pthread_mutex_unlock(&philo[i].meal);
 	}
-	pthread_mutex_unlock(&sim->monitor);
 	return (0);
 }
 
@@ -81,13 +80,13 @@ void    print_state(t_philo *philo, char *state)
 {
     long    timestamp;
 
-	pthread_mutex_lock(philo->print);
-	if (!is_dead(philo))
+	pthread_mutex_lock(philo->monitor);
+	if (!*philo->sim_stop)
 	{
     	timestamp = get_current_time() - philo->start_time;
     	printf("%ld %d %s\n", timestamp, philo->id, state);
-		pthread_mutex_unlock(philo->print);
+		pthread_mutex_unlock(philo->monitor);
 		return ;
 	}
-	pthread_mutex_unlock(philo->print);
+	pthread_mutex_unlock(philo->monitor);
 }

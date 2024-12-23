@@ -6,7 +6,7 @@
 /*   By: nicvrlja <nicvrlja@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 16:08:37 by cvrlja            #+#    #+#             */
-/*   Updated: 2024/12/19 20:49:22 by nicvrlja         ###   ########.fr       */
+/*   Updated: 2024/12/23 19:12:21 by nicvrlja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	join_threads(t_philo *philo, int i)
 void    init_sim(t_sim *sim)
 {
     memset((void *)sim, 0, sizeof(t_sim));
-	pthread_mutex_init(&sim->print, NULL);
+	//pthread_mutex_init(&sim->print, NULL);
 	pthread_mutex_init(&sim->monitor, NULL);
 	pthread_mutex_init(&sim->start, NULL);
 }
@@ -46,6 +46,7 @@ int	create_threads(t_philo *philo, t_sim *sim)
     {
      if (pthread_create(&philo[i].thread_id, NULL, philo_routine, (void *)&philo[i]))
         {
+			pthread_mutex_unlock(&sim->start);
             print_error(TH_ERR);
 			join_threads(sim->philos, i);
 			free(sim->philos);
@@ -80,7 +81,7 @@ int	init_philo(t_sim *sim, t_philo *philo, char **av)
 			philo[i].time_to_think = philo[i].time_to_eat - philo[i].time_to_sleep;
 		else
 			philo[i].time_to_think = 0;
-		philo[i].print = &sim->print;
+		//philo[i].print = &sim->print;
 		philo[i].monitor = &sim->monitor;
 		philo[i].start = &sim->start;
         philo[i].right_fork = &philo[(i + 1) % philo->philo_count].left_fork;

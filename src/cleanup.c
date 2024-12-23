@@ -6,7 +6,7 @@
 /*   By: nicvrlja <nicvrlja@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 16:40:47 by cvrlja            #+#    #+#             */
-/*   Updated: 2024/12/17 20:05:30 by nicvrlja         ###   ########.fr       */
+/*   Updated: 2024/12/23 19:12:29 by nicvrlja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void    cleanup(t_sim *sim)
         pthread_mutex_destroy(&sim->philos[i].left_fork);
 		pthread_mutex_destroy(&sim->philos[i].meal);
 	}
-	pthread_mutex_destroy(&sim->print);
+	//pthread_mutex_destroy(&sim->print);
     pthread_mutex_destroy(&sim->monitor);
 	pthread_mutex_destroy(&sim->start);
     free(sim->philos);

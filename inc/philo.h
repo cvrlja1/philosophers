@@ -6,7 +6,7 @@
 /*   By: nicvrlja <nicvrlja@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 15:42:34 by cvrlja            #+#    #+#             */
-/*   Updated: 2024/12/19 20:44:19 by nicvrlja         ###   ########.fr       */
+/*   Updated: 2024/12/23 18:20:30 by nicvrlja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ typedef struct s_philo
 	pthread_mutex_t *monitor;
 	pthread_mutex_t *start;
 	pthread_mutex_t meal;
-	pthread_mutex_t *print;
+	//pthread_mutex_t *print;
 	int	philo_count;
 	int *sim_stop;
 } t_philo;
@@ -60,7 +60,7 @@ typedef struct s_simulation
 	int	philo_count;
 	pthread_mutex_t start;
 	pthread_mutex_t monitor;
-	pthread_mutex_t print;
+	//pthread_mutex_t print;
 	t_philo *philos;
 } t_sim;
 

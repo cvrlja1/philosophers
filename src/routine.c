@@ -6,7 +6,7 @@
 /*   By: nicvrlja <nicvrlja@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 15:40:12 by cvrlja            #+#    #+#             */
-/*   Updated: 2024/12/19 20:50:06 by nicvrlja         ###   ########.fr       */
+/*   Updated: 2024/12/23 20:06:41 by nicvrlja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,12 +33,10 @@ int    philo_eat_odd(t_philo *philo)
 	print_state(philo, "has taken a fork");
 	pthread_mutex_lock(&philo->meal);
  	philo->last_meal_time = get_current_time();
+	philo->meals_eaten++;
 	pthread_mutex_unlock(&philo->meal);
 	print_state(philo, "is eating");
 	ft_usleep(philo->time_to_eat, philo);
-	pthread_mutex_lock(&philo->meal);
-	philo->meals_eaten++;
-	pthread_mutex_unlock(&philo->meal);
 	pthread_mutex_unlock(&philo->left_fork);
 	pthread_mutex_unlock(philo->right_fork);
     return (1);
@@ -52,12 +50,10 @@ int    philo_eat_even(t_philo *philo)
 	print_state(philo, "has taken a fork");
 	pthread_mutex_lock(&philo->meal);
  	philo->last_meal_time = get_current_time();
+	philo->meals_eaten++;
 	pthread_mutex_unlock(&philo->meal);
 	print_state(philo, "is eating");
 	ft_usleep(philo->time_to_eat, philo);
-	pthread_mutex_lock(&philo->meal);
-	philo->meals_eaten++;
-	pthread_mutex_unlock(&philo->meal);
 	pthread_mutex_unlock(philo->right_fork);
 	pthread_mutex_unlock(&philo->left_fork);
 	return (1);
@@ -77,11 +73,15 @@ void    *philo_routine(void *arg)
     t_philo *philo;
 
     philo = (t_philo *)arg;
+	pthread_mutex_lock(&philo->meal);
 	philo->last_meal_time = get_current_time();
+	pthread_mutex_unlock(&philo->meal);
 	pthread_mutex_lock(philo->start);
 	pthread_mutex_unlock(philo->start);
     while (!is_dead(philo))
     {
+		if (philo->philo_count == 1)
+			break ;
 		if (philo->id % 2)
 		{
 			usleep(500);
