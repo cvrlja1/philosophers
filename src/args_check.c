@@ -6,7 +6,7 @@
 /*   By: nicvrlja <nicvrlja@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 15:29:15 by cvrlja            #+#    #+#             */
-/*   Updated: 2024/12/11 17:32:32 by nicvrlja         ###   ########.fr       */
+/*   Updated: 2024/12/26 19:40:29 by nicvrlja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,10 +42,13 @@ int	check_args(int ac, char **av)
 	return (0);
 }
 
-int initialize(int ac, char **av, t_sim *sim)
+int	initialize(int ac, char **av, t_sim *sim)
 {
-	init_sim(sim);
-	if(check_args(ac, av))
+	int	i;
+
+	if (init_sim(sim))
+		return (1);
+	if (check_args(ac, av))
 		return (1);
 	sim->philos = malloc(sizeof(t_philo) * ft_atoi(av[1]));
 	if (!sim->philos)
@@ -54,5 +57,8 @@ int initialize(int ac, char **av, t_sim *sim)
 		exit(1);
 	}
 	sim->philo_count = ft_atoi(av[1]);
+	i = -1;
+	while (++i < sim->philo_count)
+		memset(&sim->philos[i], 0, sizeof(t_philo));
 	return (0);
 }

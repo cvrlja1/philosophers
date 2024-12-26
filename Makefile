@@ -1,6 +1,6 @@
 NAME = philo
 CC = cc
-CFLAGS =  -g -pthread -I./inc -Wall -Werror -Wextra
+CFLAGS =  -pthread -I./inc -Wall -Werror -Wextra
 SRC_DIR = ./src
 INC_DIR = ./inc
 SRC = $(SRC_DIR)/philo.c \
@@ -10,7 +10,8 @@ SRC = $(SRC_DIR)/philo.c \
 	  $(SRC_DIR)/routine.c \
 	  $(SRC_DIR)/initialize.c \
 	  $(SRC_DIR)/cleanup.c \
-	  $(SRC_DIR)/print_error.c
+	  $(SRC_DIR)/print_error.c \
+	  $(SRC_DIR)/time.c
 OBJ = $(SRC:.c=.o)
 
 
