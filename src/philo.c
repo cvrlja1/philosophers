@@ -6,7 +6,7 @@
 /*   By: nicvrlja <nicvrlja@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 15:42:19 by cvrlja            #+#    #+#             */
-/*   Updated: 2024/12/26 20:15:17 by nicvrlja         ###   ########.fr       */
+/*   Updated: 2024/12/30 19:32:38 by nicvrlja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,9 @@ int	main(int argc, char **argv)
 	}
 	else
 	{
-		return (print_error("Usage: \n"), 1);
+		print_error("Usage: number_of_philosophers time_to_die time_to_eat ti"
+			"me_to_sleep [number_of_times_each_philosopher_must_eat]\n");
+		return (1);
 	}
 	if (init_philo(&sim, sim.philos, argv))
 		return (1);
