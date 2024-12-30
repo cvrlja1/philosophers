@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   time.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nicvrlja <nicvrlja@student.42vienna.com    +#+  +:+       +#+        */
+/*   By: cvrlja <cvrlja@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/26 20:14:48 by nicvrlja          #+#    #+#             */
-/*   Updated: 2024/12/30 18:49:08 by nicvrlja         ###   ########.fr       */
+/*   Updated: 2024/12/30 23:32:18 by cvrlja           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,10 @@ int	ft_usleep(long milliseconds, t_philo *philo)
 		if (is_dead(philo))
 			return (1);
 		rem_t = end_t - current_time_micro();
-		if (rem_t > 10000)
-			usleep(10000);
-		else if (rem_t > 1000)
+		if (rem_t > 1000)
 			usleep(1000);
+		else if (rem_t > 500)
+			usleep(500);
 		else
 			usleep(rem_t);
 	}
