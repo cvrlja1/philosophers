@@ -6,7 +6,7 @@
 /*   By: nicvrlja <nicvrlja@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 15:46:12 by cvrlja            #+#    #+#             */
-/*   Updated: 2024/12/26 20:29:39 by nicvrlja         ###   ########.fr       */
+/*   Updated: 2024/12/30 14:01:43 by nicvrlja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,11 +69,17 @@ int	all_philos_ate(t_philo *philo)
 
 void	monitor_death(t_sim *sim)
 {
+	int	i;
+
+	i = -1;
+	while (++i < sim->philo_count)
+		sim->philos[i].last_meal_time = get_current_time();
+	pthread_mutex_unlock(&sim->start);
 	while (1)
 	{
 		if (all_philos_ate(sim->philos) || philo_died(sim->philos, sim))
 			break ;
-		usleep(200);
+		usleep(100);
 	}
 }
 

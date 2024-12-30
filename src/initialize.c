@@ -6,7 +6,7 @@
 /*   By: nicvrlja <nicvrlja@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 16:08:37 by cvrlja            #+#    #+#             */
-/*   Updated: 2024/12/26 20:28:51 by nicvrlja         ###   ########.fr       */
+/*   Updated: 2024/12/30 13:50:02 by nicvrlja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,6 @@ int	create_threads(t_philo *philo, t_sim *sim)
 			return (1);
 		}
 	}
-	usleep(200);
-	pthread_mutex_unlock(&sim->start);
-	usleep(200);
 	return (0);
 }
 
