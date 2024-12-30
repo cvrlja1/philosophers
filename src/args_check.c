@@ -6,7 +6,7 @@
 /*   By: nicvrlja <nicvrlja@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 15:29:15 by cvrlja            #+#    #+#             */
-/*   Updated: 2024/12/26 19:40:29 by nicvrlja         ###   ########.fr       */
+/*   Updated: 2024/12/30 20:56:36 by nicvrlja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,7 @@ int	initialize(int ac, char **av, t_sim *sim)
 		return (1);
 	sim->philos = malloc(sizeof(t_philo) * ft_atoi(av[1]));
 	if (!sim->philos)
-	{
-		print_error(M_ERR);
-		exit(1);
-	}
+		return (print_error(M_ERR), 1);
 	sim->philo_count = ft_atoi(av[1]);
 	i = -1;
 	while (++i < sim->philo_count)
