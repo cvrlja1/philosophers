@@ -6,7 +6,7 @@
 /*   By: nicvrlja <nicvrlja@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 16:08:37 by cvrlja            #+#    #+#             */
-/*   Updated: 2024/12/30 13:50:02 by nicvrlja         ###   ########.fr       */
+/*   Updated: 2024/12/30 17:41:20 by nicvrlja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	create_threads(t_philo *philo, t_sim *sim)
 
 	pthread_mutex_lock(&sim->start);
 	i = -1;
-	while (++i < philo->philo_count)
+	while (++i < sim->philo_count)
 	{
 		if (pthread_create(&philo[i].thread_id, NULL,
 				philo_routine, (void *)&philo[i]))
@@ -69,22 +69,17 @@ int	init_philo(t_sim *sim, t_philo *philo, char **av)
 			philo[i].meals_to_eat = -1;
 		philo[i].id = i + 1;
 		philo[i].sim_stop = &sim->stop;
-		philo[i].start_time = get_current_time();
 		philo[i].eat_t = ft_atoi(av[3]);
 		philo[i].sleep_t = ft_atoi(av[4]);
 		philo[i].die_t = ft_atoi(av[2]);
 		philo[i].philo_count = ft_atoi(av[1]);
-		if (philo->philo_count % 2 && philo[i].sleep_t < philo[i].eat_t)
+		if (sim->philo_count % 2 && philo[i].sleep_t < philo[i].eat_t)
 			philo[i].think_t = philo[i].eat_t - philo[i].sleep_t;
 		else
 			philo[i].think_t = 0;
 		philo[i].monitor = &sim->monitor;
 		philo[i].start = &sim->start;
-		philo[i].right_fork = &philo[(i + 1) % philo->philo_count].left_fork;
-		if (sim->philo_count % 2)
-			philo[i].odd = true;
-		else
-			philo[i].odd = false;
+		philo[i].right_fork = &philo[(i + 1) % sim->philo_count].left_fork;
 	}
 	return (0);
 }
