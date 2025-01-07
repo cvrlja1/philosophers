@@ -6,7 +6,7 @@
 /*   By: nicvrlja <nicvrlja@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 15:42:34 by cvrlja            #+#    #+#             */
-/*   Updated: 2024/12/30 19:23:33 by nicvrlja         ###   ########.fr       */
+/*   Updated: 2025/01/07 13:23:02 by nicvrlja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ typedef struct s_philo
 	pthread_mutex_t	*right_fork;
 	pthread_mutex_t	*monitor;
 	pthread_mutex_t	*start;
+	pthread_mutex_t	*print;
 	pthread_mutex_t	meal;
 	int				philo_count;
 	int				*sim_stop;
@@ -61,6 +62,7 @@ typedef struct s_simulation
 	int				philo_count;
 	pthread_mutex_t	start;
 	pthread_mutex_t	monitor;
+	pthread_mutex_t	print;
 	t_philo			*philos;
 }	t_sim;
 
@@ -86,4 +88,6 @@ void			meal_mutex_fail(t_philo *philo, int i);
 long			get_time_passed(t_philo *philo);
 long			last_meal_in_ms(t_philo *philo);
 unsigned long	current_time_micro(void);
+int				check_dead(t_philo *philo);
+void	set_sim_stop(t_philo *philo);
 #endif

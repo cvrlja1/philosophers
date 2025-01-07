@@ -6,7 +6,7 @@
 /*   By: nicvrlja <nicvrlja@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 15:40:12 by cvrlja            #+#    #+#             */
-/*   Updated: 2024/12/30 21:33:12 by nicvrlja         ###   ########.fr       */
+/*   Updated: 2025/01/07 13:39:33 by nicvrlja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	philo_think(t_philo *philo)
 int	philo_eat_odd(t_philo *philo)
 {
 	if (philo->odd)
-		usleep(450);
+		usleep(50);
 	pthread_mutex_lock(&philo->left_fork);
 	print_state(philo, "has taken a fork");
 	pthread_mutex_lock(philo->right_fork);
@@ -53,7 +53,7 @@ int	philo_eat_odd(t_philo *philo)
 int	philo_eat_even(t_philo *philo)
 {
 	if (!philo->odd)
-		usleep(1000);
+		usleep(750);
 	pthread_mutex_lock(philo->right_fork);
 	print_state(philo, "has taken a fork");
 	pthread_mutex_lock(&philo->left_fork);

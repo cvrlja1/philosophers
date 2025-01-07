@@ -6,7 +6,7 @@
 /*   By: nicvrlja <nicvrlja@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 15:42:19 by cvrlja            #+#    #+#             */
-/*   Updated: 2024/12/30 19:32:38 by nicvrlja         ###   ########.fr       */
+/*   Updated: 2025/01/07 13:41:30 by nicvrlja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ int	main(int argc, char **argv)
 		return (1);
 	if (create_threads(sim.philos, &sim))
 		return (1);
-	monitor_death(&sim);
 	cleanup(&sim);
 	return (0);
 }

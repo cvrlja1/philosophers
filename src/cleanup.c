@@ -6,7 +6,7 @@
 /*   By: nicvrlja <nicvrlja@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 16:40:47 by cvrlja            #+#    #+#             */
-/*   Updated: 2024/12/26 20:28:44 by nicvrlja         ###   ########.fr       */
+/*   Updated: 2025/01/07 13:29:29 by nicvrlja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void	cleanup(t_sim *sim)
 	}
 	pthread_mutex_destroy(&sim->monitor);
 	pthread_mutex_destroy(&sim->start);
+	pthread_mutex_destroy(&sim->print);
 	free(sim->philos);
 }
 

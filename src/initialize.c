@@ -6,7 +6,7 @@
 /*   By: nicvrlja <nicvrlja@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 16:08:37 by cvrlja            #+#    #+#             */
-/*   Updated: 2024/12/30 17:41:20 by nicvrlja         ###   ########.fr       */
+/*   Updated: 2025/01/07 13:12:08 by nicvrlja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,9 @@ int	init_sim(t_sim *sim)
 		return (1);
 	if (pthread_mutex_init(&sim->start, NULL))
 		return (pthread_mutex_destroy(&sim->monitor), 1);
+	if (pthread_mutex_init(&sim->print, NULL))
+		return (pthread_mutex_destroy(&sim->monitor),
+			pthread_mutex_destroy(&sim->start), 1);
 	return (0);
 }
 
@@ -79,6 +82,7 @@ int	init_philo(t_sim *sim, t_philo *philo, char **av)
 			philo[i].think_t = 0;
 		philo[i].monitor = &sim->monitor;
 		philo[i].start = &sim->start;
+		philo[i].print = &sim->print;
 		philo[i].right_fork = &philo[(i + 1) % sim->philo_count].left_fork;
 	}
 	return (0);

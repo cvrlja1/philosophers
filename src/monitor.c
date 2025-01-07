@@ -6,11 +6,18 @@
 /*   By: nicvrlja <nicvrlja@student.42vienna.com    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 15:46:12 by cvrlja            #+#    #+#             */
-/*   Updated: 2024/12/30 18:51:33 by nicvrlja         ###   ########.fr       */
+/*   Updated: 2025/01/07 13:39:33 by nicvrlja         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+void	set_sim_stop(t_philo *philo)
+{
+	pthread_mutex_lock(philo->monitor);
+	*philo->sim_stop = 1;
+	pthread_mutex_unlock(philo->monitor);
+}
 
 int	check_dead(t_philo *philo)
 {
@@ -30,11 +37,11 @@ int	philo_died(t_philo *philo, t_sim *sim)
 	{
 		if (check_dead(&philo[i]))
 		{
-			pthread_mutex_lock(&sim->monitor);
-			*philo[i].sim_stop = 1;
+			set_sim_stop(&philo[i]);
+			pthread_mutex_lock(&sim->print);
 			printf("%ld %d %s\n", get_time_passed(philo),
 				philo[i].id, "died");
-			pthread_mutex_unlock(&sim->monitor);
+			pthread_mutex_unlock(&sim->print);
 			return (1);
 		}
 	}
@@ -59,9 +66,7 @@ int	all_philos_ate(t_philo *philo, t_sim *sim)
 	}
 	if (all_ate == sim->philo_count)
 	{
-		pthread_mutex_lock(philo->monitor);
-		*philo->sim_stop = 1;
-		pthread_mutex_unlock(philo->monitor);
+		set_sim_stop(philo);
 		return (1);
 	}
 	return (0);
@@ -89,18 +94,18 @@ void	monitor_death(t_sim *sim)
 	{
 		if (all_philos_ate(sim->philos, sim) || philo_died(sim->philos, sim))
 			break ;
-		usleep(200);
+		usleep(100);
 	}
 }
 
 void	print_state(t_philo *philo, char *state)
 {
-	pthread_mutex_lock(philo->monitor);
-	if (!*philo->sim_stop)
+	pthread_mutex_lock(philo->print);
+	if (!is_dead(philo))
 	{
 		printf("%ld %d %s\n", get_time_passed(philo), philo->id, state);
-		pthread_mutex_unlock(philo->monitor);
+		pthread_mutex_unlock(philo->print);
 		return ;
 	}
-	pthread_mutex_unlock(philo->monitor);
+	pthread_mutex_unlock(philo->print);
 }
